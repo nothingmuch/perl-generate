@@ -8,9 +8,11 @@ use warnings;
 use Perl::Generate::AST::Node::Subcall;
 use Perl::Generate::AST::Node::Var::Scalar;
 use Perl::Generate::AST::Node::Assignment;
+use Perl::Generate::AST::Node::Stmts;
+use Perl::Generate::AST::Node::If;
 
 use Sub::Exporter -setup => {
-	exports => [qw/call var assign/],
+	exports => [qw/call var assign cond stmts/],
 	groups  => {
 		default => [':all']
 	}
@@ -49,6 +51,24 @@ sub assign ($$) {
 	return Perl::Generate::AST::Node::Assignment->new(
 		lvalue => $lvalue,
 		rvalue => $rvalue,
+	);
+}
+
+sub stmts (@) {
+	my @stmts = @_;
+
+	return Perl::Generate::AST::Node::Stmts->new(
+		substatements => \@stmts,
+	);
+}
+
+sub cond ($$;$) {
+	my ( $cond, $true, $false ) = @_;
+
+	return Perl::Generate::AST::Node::If->new(
+		cond => $cond,
+		true => $true,
+		false => $false,
 	);
 }
 

@@ -20,11 +20,13 @@ has rvalue => (
 sub ppi {
 	my $self = shift;
 
-	my $assignment = PPI::Statement::Expression->new( $self->lvalue->ppi );
+	my @lv_ppi = $self->lvalue->ppi;
+	my $assignment = PPI::Statement::Expression->new( shift @lv_ppi );
+	$assignment->__add_element( $_ ) for @lv_ppi;
 
 	$assignment->__add_element( PPI::Token::Operator->new('=') );
 
-	$assignment->__add_element( $self->rvalue->ppi );
+	$assignment->__add_element( $_ ) for $self->rvalue->ppi;
 
 	$assignment;
 }

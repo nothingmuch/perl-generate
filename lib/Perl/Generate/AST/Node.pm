@@ -11,7 +11,7 @@ sub stringify {
 	my $self = shift;
 
 	my $f = PPI::Document::Fragment->new;
-	$f->add_element( $self->ppi );
+	$f->add_element( $_ ) for $self->ppi;
 	return $f->serialize;
 }
 

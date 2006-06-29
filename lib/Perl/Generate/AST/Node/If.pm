@@ -2,6 +2,7 @@
 
 package Perl::Generate::AST::Node::If;
 use Moose;
+use Moose::Util::TypeConstraints;
 
 with qw/
 	Perl::Generate::AST::Node
@@ -22,8 +23,22 @@ has true => (
 	coerce   => 1,
 );
 
+use Data::Dumper;
+my $if_or_block = __PACKAGE__ . "IfOrBlock";
+subtype $if_or_block =>
+	=> as "Object"
+	=> where { $_->isa(__PACKAGE__) || $_->isa("Perl::Generate::AST::Node::Block") };
+
+coerce $if_or_block
+	=> from "Perl::Generate::AST::Node",
+	=> via {
+		return $_ if $_->isa(__PACKAGE__);
+		return $_ if $_->isa("Perl::Generate::AST::Node::Block");
+		find_type_constraint("Perl::Generate::AST::Node::Block")->coercion->coerce($_);
+	};
+
 has false => (
-	isa => "Perl::Generate::AST::Node::Block",
+	isa => $if_or_block,
 	is  => "rw",
 	required => 0,
 	coerce   => 1,

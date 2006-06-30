@@ -14,7 +14,7 @@ coerce "Perl::Generate::AST::Node::Block" =>
 	=> from "ArrayRef",
 	=> via { Perl::Generate::AST::Node::Stmts->new( body => $_ ) },
 	=> from "Perl::Generate::AST::Node",
-	=> via { Perl::Generate::AST::Node::Block->new( body => $_ ) };
+	=> via { $_->isa(__PACKAGE__) ? $_ : Perl::Generate::AST::Node::Block->new( body => $_ ) };
 
 has body => (
 	isa => "Perl::Generate::AST::Node::Stmts",

@@ -10,9 +10,12 @@ use Perl::Generate::AST::Node::Var::Scalar;
 use Perl::Generate::AST::Node::Assignment;
 use Perl::Generate::AST::Node::Stmts;
 use Perl::Generate::AST::Node::If;
+use Perl::Generate::AST::Node::Sub::Anon;
+use Perl::Generate::AST::Node::Sub::Named;
+
 
 use Sub::Exporter -setup => {
-	exports => [qw/call var assign cond stmts/],
+	exports => [qw/call var assign cond stmts asub nsub/],
 	groups  => {
 		default => [':all']
 	}
@@ -69,6 +72,28 @@ sub cond ($$;$) {
 		cond => $cond,
 		true => $true,
 		false => $false,
+	);
+}
+
+sub asub ($;$) {
+	my $proto = shift if @_ == 2;
+	my $body  = shift;
+
+	return Perl::Generate::AST::Node::Sub::Anon->new(
+		proto => $proto,
+		body  => $body,
+	);
+}
+
+sub nsub ($$;$) {
+	my $name  = shift;
+	my $proto = shift if @_ == 2;
+	my $body  = shift;
+
+	return Perl::Generate::AST::Node::Sub::Named->new(
+		name  => $name,
+		proto => $proto,
+		body  => $body,
 	);
 }
 

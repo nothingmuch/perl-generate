@@ -70,4 +70,24 @@ stmts(
 is( $e, 3, "elk called twice" );
 is( $m, 3, "moose called once" );
 
+my $sub = eval asub( call('moose') )->stringify;
 
+is( ref($sub), "CODE", "got a code ref" );
+
+is( $m, 3, "moose not called" );
+
+$sub->();
+
+is( $m, 4, "moose called" );
+
+eval { lalala() };
+ok( $@, "lalala() dies" );
+
+is( $e, 3, "elk not called" );
+
+eval nsub( lalala => call('elk') )->stringify;
+
+eval { lalala() };
+ok( !$@, "lalala() doesn't die" );
+
+is( $e, 4, "elk called" );

@@ -63,7 +63,7 @@ sub add_block_ppi {
 		PPI::Token::Structure->new('('),
 	);
 
-	$ppi_cond->__add_element( $cond->ppi );
+	$ppi_cond->__add_element( $_ ) for $cond->ppi;
 
 	$ppi_cond->_set_finish( PPI::Token::Structure->new(')') );
 

@@ -7,6 +7,13 @@ use PPI ();
 
 requires "ppi";
 
+has stash => (
+	isa => "HashRef",
+	is  => "rw",
+	lazy    => 1,
+	default => sub { {} },
+);
+
 sub stringify {
 	my $self = shift;
 

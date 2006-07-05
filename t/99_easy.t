@@ -91,3 +91,23 @@ eval { lalala() };
 ok( !$@, "lalala() doesn't die" );
 
 is( $e, 4, "elk called" );
+
+
+# constant coercions
+{
+	my $assign = assign( var('$bar'), 3 );
+	isa_ok( $assign->rvalue, "Perl::Generate::AST::Node::Const::Num", "coerced" );
+	is( $assign->rvalue->value, 3, , "value is correct" );
+}
+{
+	my $assign = assign( var('$bar'), 'foo' );
+	isa_ok( $assign->rvalue, "Perl::Generate::AST::Node::Const::Str", "coerced" );
+	is( $assign->rvalue->value, 'foo', , "value is correct" );
+}
+{
+	my $assign = assign( var('$bar'), str(3) );
+	isa_ok( $assign->rvalue, "Perl::Generate::AST::Node::Const::Str", "overridden" );
+	is( $assign->rvalue->value, 3, , "value is correct" );
+}
+
+isa_ok( num(3), "Perl::Generate::AST::Node::Const::Num", "overridden" );

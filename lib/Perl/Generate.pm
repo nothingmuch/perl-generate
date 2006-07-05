@@ -12,10 +12,11 @@ use Perl::Generate::AST::Node::Stmts;
 use Perl::Generate::AST::Node::If;
 use Perl::Generate::AST::Node::Sub::Anon;
 use Perl::Generate::AST::Node::Sub::Named;
+use Perl::Generate::AST::Node::Const;
 
 
 use Sub::Exporter -setup => {
-	exports => [qw/call var assign cond stmts asub nsub/],
+	exports => [qw/call var assign cond stmts asub nsub str num/],
 	groups  => {
 		default => [':all']
 	}
@@ -95,6 +96,16 @@ sub nsub ($$;$) {
 		proto => $proto,
 		body  => $body,
 	);
+}
+
+sub num ($) {
+	my $val = shift;
+	return Perl::Generate::AST::Node::Const::Num->new( value => $val );
+}
+
+sub str ($) {
+	my $val = shift;
+	return Perl::Generate::AST::Node::Const::Str->new( value => $val );
 }
 
 __PACKAGE__;

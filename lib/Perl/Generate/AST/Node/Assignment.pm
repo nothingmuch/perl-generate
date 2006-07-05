@@ -15,6 +15,7 @@ has rvalue => (
 	does => "Perl::Generate::AST::Node::RV",
 	is   => "rw",
 	required => 1,
+	coerce   => 1,
 );
 
 sub ppi {

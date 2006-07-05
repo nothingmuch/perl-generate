@@ -7,20 +7,28 @@ use Test::More 'no_plan';
 
 use ok 'Perl::Generate::AST::Node::Subcall';
 
+use Perl::Generate::AST::Node::Var::Scalar;
+
 sub foo { "magic" };
 
 my $sub = Perl::Generate::AST::Node::Subcall->new(
-	subname => "foo",
+	code => "foo",
 );
 
 can_ok( $sub, "ppi" );
 
 isa_ok( $sub->ppi, "PPI::Node" );
 
-my $f = PPI::Document::Fragment->new;
-$f->add_element( $sub->ppi );
-
 can_ok( $sub, "stringify" );
 
 is( eval $sub->stringify, "magic", "code is correct" );
 
+our $foo = sub { 42 };
+
+my $cref = Perl::Generate::AST::Node::Subcall->new(
+	code => Perl::Generate::AST::Node::Var::Scalar->new( name => 'foo' ),
+);
+
+isa_ok( $cref, "Perl::Generate::AST::Node::Subcall" );
+
+is( eval $cref->stringify, 42, "code ref also possible" );

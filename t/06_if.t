@@ -18,7 +18,7 @@ sub elk { $e++ };
 
 my $if = Perl::Generate::AST::Node::If->new(
 	cond => my $cond = Perl::Generate::AST::Node::Var::Scalar->new( name => "foo" ),
-	true => my $body = Perl::Generate::AST::Node::Subcall->new( subname => "moose" ),
+	true => my $body = Perl::Generate::AST::Node::Subcall->new( code => "moose" ),
 );
 
 ok( eval $cond->stringify, "condition is true" );
@@ -40,7 +40,7 @@ is( $m, 2, "moose not called" );
 my $if_else = Perl::Generate::AST::Node::If->new(
 	cond => $cond,
 	true => $body,
-	false => Perl::Generate::AST::Node::Subcall->new( subname => "elk" ),
+	false => Perl::Generate::AST::Node::Subcall->new( code => "elk" ),
 );
 
 like( $if_else->stringify, qr/else/, "contains an else" );
@@ -55,7 +55,7 @@ my $elsif = Perl::Generate::AST::Node::If->new(
 	true => $body,
 	false => Perl::Generate::AST::Node::If->new(
 		cond => Perl::Generate::AST::Node::Var::Scalar->new( name => 'bar' ),
-		true => Perl::Generate::AST::Node::Subcall->new( subname => "elk" ),
+		true => Perl::Generate::AST::Node::Subcall->new( code => "elk" ),
 	),
 );
 

@@ -23,11 +23,11 @@ use Sub::Exporter -setup => {
 };
 
 sub call ($;$) {
-	my ( $subname, $args_expr ) = @_;
+	my ( $code, $args_expr ) = @_;
 
 	return Perl::Generate::AST::Node::Subcall->new(
-		subname => $subname,
-		args    => $args_expr, # undef is OK
+		code => $code,
+		args => $args_expr, # undef is OK
 	);
 }
 

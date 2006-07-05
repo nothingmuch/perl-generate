@@ -26,7 +26,7 @@ my $several_exps = Perl::Generate::AST::Node::Block->new(
 
 is( $several_exps->stringify, '{$x;$y;}', "multiple statements + coercion" );
 
-my $subcall = Perl::Generate::AST::Node::Block->new( body => Perl::Generate::AST::Node::Subcall->new( subname => "foo" ) );
+my $subcall = Perl::Generate::AST::Node::Block->new( body => Perl::Generate::AST::Node::Subcall->new( code => "foo" ) );
 
 is( $subcall->body->substatements->[0]->expr->stringify, 'foo()', "first substatement's expr" );
 is( $subcall->body->substatements->[0]->stringify, 'foo();', "first substatement" );
